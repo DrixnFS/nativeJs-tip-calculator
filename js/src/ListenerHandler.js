@@ -3,18 +3,25 @@
  * @namespace
  * @author Martin Krzyzanek
  */
-var ListenerHandler = {
+const ListenerHandler = {
 
     /**
      * CallBack function for listener, requests TipHandler to save price from input, recalculates final price and updates the view
      * @param {Event} e - event received from listener
      */
     handlePriceChange(e){
-        var parsed_value = parseInt( e.currentTarget.value );
+        ListenerHandler._resetErrors();
 
+        let parsed_value = parseInt( e.currentTarget.value );
         //Check if the price is different from the one set
         if(TipHandler.price != parsed_value) {
-            TipHandler.setPrice(parsed_value);
+            let res = TipHandler.setPrice(parsed_value);
+            if(!res){
+                console.log(TipHandler.price);
+                ListenerHandler.handleInputErrors('price');
+                return false;
+            }
+
             ListenerHandler._updateFinalPrice();
         }
     },
@@ -24,7 +31,14 @@ var ListenerHandler = {
      * @param {Event} e - event received from listener
      */
     handleQualityChange(e){
-        TipHandler.setServQuality(e.currentTarget.value);
+        ListenerHandler._resetErrors();
+
+        let res = TipHandler.setServQuality(e.currentTarget.value);
+        if(!res){
+            ListenerHandler.handleInputErrors('serv_quality');
+            return false;
+        }
+        
         ListenerHandler._updateFinalPrice();
     },
 
@@ -33,20 +47,63 @@ var ListenerHandler = {
      * @param {Event} e - event received from listener
      */
     handleCustomerCountChange(e){
-        var parsed_value = parseInt( e.currentTarget.value );
+        ListenerHandler._resetErrors();
 
+        let parsed_value = parseInt( e.currentTarget.value );
         //Check if the price is different from the one set
         if(TipHandler.cust_count != parsed_value) {
-            TipHandler.setCustomerCount(parsed_value);
+            let res = TipHandler.setCustomerCount(parsed_value);
+            if(!res){
+                ListenerHandler.handleInputErrors('cust_count');
+                return false;
+            }
+
             ListenerHandler._updateFinalPrice();
         }
     },
 
     /**
+     * Handles showing of errors for specific parts of the form based on type, which is dataset labelType from the UI.
+     * @param {String} type - data-labelType value of label so the code knows where to look for elements
+     */
+    handleInputErrors(type){
+        if(!type){
+            console.error('ListenerHandler.handleInputErrors:71 - no "type" arg received!');
+            return false;
+        }
+
+        try{
+            //Gets label which contains all the elements of specific part of form, then sets small with err to be visible
+            let containing_label = document.querySelector(`#main-content label[data-labelType="${type}"]`);
+            containing_label.querySelector('small').classList.add('el-visible');
+
+            //Gets either input or select, nothing else supported rn, from the container and add has-error class on it
+            let element = containing_label.querySelector('input');
+            if(!element) element = containing_label.querySelector('select');
+            element.classList.add('has-error');
+        } catch(err){
+            console.error(`Error occured in ListenerHandler.handleInputErrors:69 -- ${err}`);
+        }
+    },
+
+    /**
+     * 'private' helper function that resets all the error elements in UI to its current state so its not showing up
+     */
+    _resetErrors(){
+        //Gets all visible small elements with errors and hides them
+        let visible_errors =  document.querySelectorAll('#main-content .el-visible');
+        if(visible_errors.length) visible_errors.forEach(el => el.classList.remove('el-visible'));
+
+        //Gets all elements with error class on them and removes that class
+        let error_elems = document.querySelectorAll('#main-content .has-error');
+        if(error_elems.length) error_elems.forEach(el => el.classList.remove('has-error'));
+    },
+    
+    /**
      * 'private' helper function that updates the view of Final price with the one set inside TipHandler
      */
     _updateFinalPrice(){
         document.getElementById('final-price').textContent = TipHandler.final_price;
-    }
+    },
 
 };

@@ -16,26 +16,35 @@
 
     <section id="main-content">
 
-        <label for="price">
-            <span>Částka na účtu</span> 
-            <input id="main-price" type="number" name="price" value="0" min="0">
+        <label class="lab-column" data-labelType="price">
+            <span class="spn-label-text">Částka na účtu</span> 
+
+            <input id="main-price" class="inp-rounded" type="number" name="price" value="0" min="0">
+
+            <small class="sml-error">Špatná částka! Částka musí být pouze číslo vyšší 0</small>
         </label>
 
-        <label for="serv-quality">
-            <span>Kvalita obsluhy</span> 
-            <select name="serv-quality" id="service-quality">
+        <label class="lab-column" data-labelType="serv_quality">
+            <span class="spn-label-text">Kvalita obsluhy</span> 
+
+            <select name="serv-quality" id="service-quality" class="sel-rounded">
                 <option value="bad">Špatná</option>
                 <option value="good">Dobrá</option>
                 <option value="perfect">Perfektní, jsem nadšený</option>
             </select>
+
+            <small class="sml-error">Špatný výběr! Vyberte jednu z možností</small>
         </label>
 
-        <label for="cust_count"> 
-            <span>Kolik lidí se dělí o účet</span> 
-            <input id="customer-count" type="number" name="cust-count" value="1" min="1">
+        <label class="lab-column" data-labelType="cust_count"> 
+            <span class="spn-label-text">Kolik lidí se dělí o účet</span> 
+
+            <input id="customer-count" class="inp-rounded" type="number" name="cust-count" value="1" min="1">
+
+            <small class="sml-error">Špatný počet osob! Počet osob musí být pouze číslo vyšší 1</small>
         </label>
 
-        <h3>Celková cena: <span id="final-price">0</span> Kč</h3>
+        <h3 class="result-header">Celková cena: <span id="final-price">0</span> Kč</h3>
 
     </section>
     

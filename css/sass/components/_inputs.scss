@@ -1,0 +1,24 @@
+.inp-rounded {
+    border-radius: 4px;
+    padding: .5em;
+    margin: .2em 0;
+    font-size: $font-size-big;
+    height: 2em;
+    background-color: #fff;
+    color: #000;
+    border: none;
+    width: 100%;
+    outline: none;
+    transition: box-shadow 300ms;
+    box-shadow: 0 0 2px rgba(0,0,0,0.2)
+}
+
+.inp-rounded:not(.has-error):hover {
+    box-shadow: 0 0 2px rgba(0,0,0,0.5);
+    z-index: 1;
+}
+
+input.has-error {
+    transition: box-shadow 300ms;
+    box-shadow: 0 0 2px $color-red;
+}

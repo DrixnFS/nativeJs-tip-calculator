@@ -3,7 +3,7 @@
  * @namespace
  * @author Martin Krzyzanek
  */
-var TipHandler = {
+const TipHandler = {
     /**
      * Margin table for tip calculating
      */
@@ -15,7 +15,7 @@ var TipHandler = {
     /**
      * Value of money addition per customer
      */
-    cust_addition: 10,
+    cust_addition: 25,
     /**
      * Stores the price from the price input
      */
@@ -36,37 +36,55 @@ var TipHandler = {
     /**
      * Sets received arg into object's price variable and re-calculates the final price
      * @param {int} value - number to be saved as price
+     * @returns {Boolean} if value received is supported returns true otherwise false
      */
     setPrice(value){
+        let res = false;
+
         //Check if value received is actually integer and is not in negative amount
         if(Number.isInteger(value) && value >= 0){
             TipHandler.price = value;
             TipHandler.calcFinalPrice();
-        }
+            res = true;
+        } 
+
+        return res;
     },
 
     /**
      * Sets received arg into object's service quality variable and re-calculates the final price
      * @param {string} value - string to be saved as service quality
+     * @returns {Boolean} if value received is supported returns true otherwise false
      */
     setServQuality(value){
+        let res = false;
+
         //Check if value received from the select is actualy one supported by margin table
         if(TipHandler.tip_margins[value]){
             TipHandler.serv_quality = value;
             TipHandler.calcFinalPrice();
+            res = true;
         }
+
+        return res;
     },
 
     /**
      * Sets received arg into object's customer count variable and re-calculates the final price
      * @param {int} value - number to be saved as customer count
+     * @returns {Boolean} if value received is supported returns true otherwise false
      */
     setCustomerCount(value){
+        let res = false;
+
         //Check if value received is actually integer and is higher than 1
         if(Number.isInteger(value) && value >= 1){
             TipHandler.cust_count = value;
             TipHandler.calcFinalPrice();
+            res = true;
         }
+
+        return res;
     },
 
     /**
@@ -74,7 +92,7 @@ var TipHandler = {
      */
     calcFinalPrice(){
         try{
-           TipHandler.final_price = TipHandler._roundPrice( TipHandler._getPriceAfterTip() + TipHandler._getCustomerAddition() );
+           TipHandler.final_price = TipHandler._roundAndFormatPrice( TipHandler._getPriceAfterTip() + TipHandler._getCustomerAddition() );
         } catch(err){
             console.error(err);
         }
@@ -101,7 +119,7 @@ var TipHandler = {
      * @param {int} number - any number needed to be rounded up
      * @returns {int} rounded up number in readable format
      */
-    _roundPrice(number){
+    _roundAndFormatPrice(number){
         //number - 1 is there becouse ceil rounds up everything, so if the number is 1 it returns 10 if its 10 it equals 20, this way it makes sure the round numbers stays
         return (Math.ceil(parseFloat(number - 1) / 10) * 10).toLocaleString();
     }

@@ -1,0 +1,18 @@
+.lab-column {
+    display: flex;
+    flex-flow: column;
+    padding: .5em;
+}
+
+.spn-label-text {
+    font-size : $font-size-med;
+    color : $color-black;
+    padding: .2em 0;
+}
+
+.sml-error {
+    visibility: hidden;
+    font-size: $font-size-small;
+    color: $color-red;
+    padding: .2em;
+}
