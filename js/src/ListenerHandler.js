@@ -10,14 +10,17 @@ const ListenerHandler = {
      * @param {Event} e - event received from listener
      */
     handlePriceChange(e){
-        ListenerHandler._resetErrors();
+        ListenerHandler._resetErrors('price');
 
         let parsed_value = parseInt( e.currentTarget.value );
+
+        //Check if input is empty or has 0 as value, if so fixes the final price so outdated data arent shown
+        if(parsed_value == 0 || isNaN(parsed_value)) ListenerHandler._nullFinalPriceFix();
+
         //Check if the price is different from the one set
         if(TipHandler.price != parsed_value) {
             let res = TipHandler.setPrice(parsed_value);
             if(!res){
-                console.log(TipHandler.price);
                 ListenerHandler.handleInputErrors('price');
                 return false;
             }
@@ -31,7 +34,7 @@ const ListenerHandler = {
      * @param {Event} e - event received from listener
      */
     handleQualityChange(e){
-        ListenerHandler._resetErrors();
+        ListenerHandler._resetErrors('serv_quality');
 
         let res = TipHandler.setServQuality(e.currentTarget.value);
         if(!res){
@@ -47,9 +50,13 @@ const ListenerHandler = {
      * @param {Event} e - event received from listener
      */
     handleCustomerCountChange(e){
-        ListenerHandler._resetErrors();
+        ListenerHandler._resetErrors('cust_count');
 
         let parsed_value = parseInt( e.currentTarget.value );
+
+        //Check if input is empty or has 1 as value, if so fixes the final price so outdated data arent shown
+        if(parsed_value == 1 || isNaN(parsed_value)) ListenerHandler._nullFinalPriceFix();
+
         //Check if the price is different from the one set
         if(TipHandler.cust_count != parsed_value) {
             let res = TipHandler.setCustomerCount(parsed_value);
@@ -78,9 +85,8 @@ const ListenerHandler = {
             containing_label.querySelector('small').classList.add('el-visible');
 
             //Gets either input or select, nothing else supported rn, from the container and add has-error class on it
-            let element = containing_label.querySelector('input');
-            if(!element) element = containing_label.querySelector('select');
-            element.classList.add('has-error');
+            let element = containing_label.querySelector('input') || containing_label.querySelector('select');
+            if(element) element.classList.add('has-error');
         } catch(err){
             console.error(`Error occured in ListenerHandler.handleInputErrors:69 -- ${err}`);
         }
@@ -89,13 +95,18 @@ const ListenerHandler = {
     /**
      * 'private' helper function that resets all the error elements in UI to its current state so its not showing up
      */
-    _resetErrors(){
+    _resetErrors(type){
+        if(!type){
+            console.error('ListenerHandler._resetErrors:90 - no "type" arg received!');
+            return false;
+        }
+
         //Gets all visible small elements with errors and hides them
-        let visible_errors =  document.querySelectorAll('#main-content .el-visible');
+        let visible_errors =  document.querySelectorAll(`#main-content label[data-labelType="${type}"] .el-visible`);
         if(visible_errors.length) visible_errors.forEach(el => el.classList.remove('el-visible'));
 
         //Gets all elements with error class on them and removes that class
-        let error_elems = document.querySelectorAll('#main-content .has-error');
+        let error_elems = document.querySelectorAll(`#main-content label[data-labelType="${type}"] .has-error`);
         if(error_elems.length) error_elems.forEach(el => el.classList.remove('has-error'));
     },
     
@@ -105,5 +116,15 @@ const ListenerHandler = {
     _updateFinalPrice(){
         document.getElementById('final-price').textContent = TipHandler.final_price;
     },
+
+    /**
+     * 'private' helper function that fixes the final price still showing when input is empty or has default value
+     */
+    _nullFinalPriceFix(){
+        TipHandler.price = document.getElementById('main-price').value || 0;
+        TipHandler.cust_count = document.getElementById('customer-count').value || 0;
+        TipHandler.calcFinalPrice();
+        ListenerHandler._updateFinalPrice();
+    }
 
 };

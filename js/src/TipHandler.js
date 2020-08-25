@@ -92,7 +92,11 @@ const TipHandler = {
      */
     calcFinalPrice(){
         try{
-           TipHandler.final_price = TipHandler._roundAndFormatPrice( TipHandler._getPriceAfterTip() + TipHandler._getCustomerAddition() );
+            let res = TipHandler._roundAndFormatPrice(TipHandler._getPriceAfterTip() + TipHandler._getCustomerAddition());
+            //slight fix for when there are errors in UI it wont show negative zero
+            res = res == -0 ? 0 : res;
+
+            TipHandler.final_price = res;
         } catch(err){
             console.error(err);
         }
