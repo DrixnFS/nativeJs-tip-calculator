@@ -15,7 +15,7 @@ const ListenerHandler = {
         let parsed_value = parseInt( e.currentTarget.value );
 
         //Check if input is empty or has 0 as value, if so fixes the final price so outdated data arent shown
-        if(parsed_value == 0 || isNaN(parsed_value)) ListenerHandler._nullFinalPriceFix();
+        if(parsed_value == 0 || isNaN(parsed_value)) ListenerHandler._nullPricesOnError();
 
         let res = TipHandler.setPrice(parsed_value);
         if(!res){
@@ -23,7 +23,7 @@ const ListenerHandler = {
             return false;
         }
 
-        ListenerHandler._updateFinalPrice();
+        ListenerHandler._updatePrices();
     },
 
     /**
@@ -39,7 +39,7 @@ const ListenerHandler = {
             return false;
         }
         
-        ListenerHandler._updateFinalPrice();
+        ListenerHandler._updatePrices();
     },
 
     /**
@@ -52,7 +52,7 @@ const ListenerHandler = {
         let parsed_value = parseInt( e.currentTarget.value );
 
         //Check if input is empty or has 1 as value, if so fixes the final price so outdated data arent shown
-        if(parsed_value == 1 || isNaN(parsed_value)) ListenerHandler._nullFinalPriceFix();
+        if(parsed_value == 1 || isNaN(parsed_value)) ListenerHandler._nullPricesOnError();
 
         let res = TipHandler.setCustomerCount(parsed_value);
         if(!res){
@@ -60,7 +60,7 @@ const ListenerHandler = {
             return false;
         }
 
-        ListenerHandler._updateFinalPrice();
+        ListenerHandler._updatePrices();
     },
 
     /**
@@ -107,16 +107,18 @@ const ListenerHandler = {
     /**
      * 'private' helper function that updates the view of Final price with the one set inside TipHandler
      */
-    _updateFinalPrice(){
+    _updatePrices(){
         document.getElementById('final-price').textContent = TipHandler.final_price;
+        document.getElementById('tip-price').textContent = TipHandler.tip_price;
     },
 
     /**
      * 'private' helper function that fixes the final price still showing when input is empty or has default value
      */
-    _nullFinalPriceFix(){
+    _nullPricesOnError(){
         TipHandler.final_price = 0;
-        ListenerHandler._updateFinalPrice();
+        TipHandler.tip_price = 0;
+        ListenerHandler._updatePrices();
     }
 
 };

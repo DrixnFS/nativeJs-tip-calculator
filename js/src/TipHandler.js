@@ -29,6 +29,10 @@ const TipHandler = {
      */
     serv_quality : 'bad',
     /**
+     * Stores value of tip price represented in the UI
+     */
+    tip_price : 0,
+    /**
      * Stores value of final price represented in the UI
      */
     final_price : 0,
@@ -44,6 +48,7 @@ const TipHandler = {
         //Check if value received is actually integer and is not in negative amount
         if(Number.isInteger(value) && value >= 0){
             TipHandler.price = value;
+            TipHandler.calcTipPrice();
             TipHandler.calcFinalPrice();
             res = true;
         } 
@@ -62,6 +67,7 @@ const TipHandler = {
         //Check if value received from the select is actualy one supported by margin table
         if(TipHandler.tip_margins[value]){
             TipHandler.serv_quality = value;
+            TipHandler.calcTipPrice();
             TipHandler.calcFinalPrice();
             res = true;
         }
@@ -79,6 +85,9 @@ const TipHandler = {
 
         //Check if value received is actually integer and is higher than 1
         if(Number.isInteger(value) && value >= 1){
+            //fix if there is error in the input and then fixed so the code recalculates the tip also
+            if(TipHandler.cust_count == value) TipHandler.calcTipPrice();
+            
             TipHandler.cust_count = value;
             TipHandler.calcFinalPrice();
             res = true;
@@ -98,7 +107,18 @@ const TipHandler = {
 
             TipHandler.final_price = res;
         } catch(err){
-            console.error(err);
+            console.error(`Error occured in TipHandler.calcFinalPrice:99 -- ${err}`);
+        }
+    },
+
+    /**
+     * 
+     */
+    calcTipPrice(){
+        try{
+            TipHandler.tip_price = TipHandler._getPriceTip();
+        } catch(err){
+            console.error(`Error occured in TipHandler.calcTipPrice:114 -- ${err}`);
         }
     },
 
@@ -115,7 +135,15 @@ const TipHandler = {
      * @returns {int} price including the tax
      */
     _getPriceAfterTip(){
-        return TipHandler.price + ( ( TipHandler.price / 100 ) * TipHandler.tip_margins[TipHandler.serv_quality] );
+        return TipHandler.price + TipHandler._getPriceTip();
+    },
+
+    /**
+     * 'private' helper function that calculates tip from the price
+     * @returns {int} integer representing amount of tip value
+     */
+    _getPriceTip(){
+        return ( TipHandler.price / 100 ) * TipHandler.tip_margins[TipHandler.serv_quality];
     },
 
     /**

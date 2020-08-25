@@ -36,7 +36,8 @@ body {
   text-align: center;
 }
 
-#final-price {
+#final-price,
+#tip-price {
   color: #990000;
   font-weight: 600;
 }
