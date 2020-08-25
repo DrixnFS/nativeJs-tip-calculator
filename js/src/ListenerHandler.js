@@ -121,8 +121,8 @@ const ListenerHandler = {
      * 'private' helper function that fixes the final price still showing when input is empty or has default value
      */
     _nullFinalPriceFix(){
-        TipHandler.price = document.getElementById('main-price').value || 0;
-        TipHandler.cust_count = document.getElementById('customer-count').value || 0;
+        TipHandler.price = 0;
+        TipHandler.cust_count = 0;
         TipHandler.calcFinalPrice();
         ListenerHandler._updateFinalPrice();
     }
