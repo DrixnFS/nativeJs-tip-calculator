@@ -1,0 +1,11 @@
+//Imports variables for our SCSS files
+@import 'abstracts/variables';
+
+//Imports Main Content styles of page
+@import 'layout/mainContent';
+
+//Imports styles of components
+@import 'components/inputs';
+
+//Imports styles handling responsivity
+@import 'base/responsivity';

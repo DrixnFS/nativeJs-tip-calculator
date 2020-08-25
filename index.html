@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="css/main.min.css">
+
+    <script src="js/src/TipHandler.js"></script>
+    <script src="js/src/ListenerHandler.js"></script>
+    <script src="js/src/listeners.js"></script>
+
+    <title>Výpočet dýška</title>
+</head>
+<body>
+
+    <section id="main-content">
+
+        <label for="price">
+            <span>Částka na účtu</span> 
+            <input id="main-price" type="number" name="price" value="0" min="0">
+        </label>
+
+        <label for="serv-quality">
+            <span>Kvalita obsluhy</span> 
+            <select name="serv-quality" id="service-quality">
+                <option value="bad">Špatná</option>
+                <option value="good">Dobrá</option>
+                <option value="perfect">Perfektní, jsem nadšený</option>
+            </select>
+        </label>
+
+        <label for="cust_count"> 
+            <span>Kolik lidí se dělí o účet</span> 
+            <input id="customer-count" type="number" name="cust-count" value="1" min="1">
+        </label>
+
+        <h3>Celková cena: <span id="final-price">0</span> Kč</h3>
+
+    </section>
+    
+</body>
+</html>
