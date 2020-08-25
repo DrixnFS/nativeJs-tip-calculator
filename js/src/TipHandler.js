@@ -102,17 +102,16 @@ const TipHandler = {
     calcFinalPrice(){
         try{
             let res = TipHandler._roundAndFormatPrice(TipHandler._getPriceAfterTip() + TipHandler._getCustomerAddition());
+            
             //slight fix for when there are errors in UI it wont show negative zero
-            res = res == -0 ? 0 : res;
-
-            TipHandler.final_price = res;
+            TipHandler.final_price = res == -0 ? 0 : res;
         } catch(err){
             console.error(`Error occured in TipHandler.calcFinalPrice:99 -- ${err}`);
         }
     },
 
     /**
-     * 
+     * Calculates the tip from the price based on tip margin and sets it into the object
      */
     calcTipPrice(){
         try{
