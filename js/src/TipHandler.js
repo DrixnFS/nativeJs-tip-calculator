@@ -85,10 +85,8 @@ const TipHandler = {
 
         //Check if value received is actually integer and is higher than 1
         if(Number.isInteger(value) && value >= 1){
-            //fix if there is error in the input and then fixed so the code recalculates the tip also
-            if(TipHandler.cust_count == value) TipHandler.calcTipPrice();
-            
             TipHandler.cust_count = value;
+            TipHandler.calcTipPrice();
             TipHandler.calcFinalPrice();
             res = true;
         }
