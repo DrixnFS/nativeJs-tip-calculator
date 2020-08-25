@@ -23,7 +23,8 @@ const ListenerHandler = {
             return false;
         }
 
-        ListenerHandler._updatePrices();
+        //Updates the prices in UI only if no errors are present
+        if(!ListenerHandler._isErrPresent()) ListenerHandler._updatePrices();
     },
 
     /**
@@ -31,6 +32,7 @@ const ListenerHandler = {
      * @param {Event} e - event received from listener
      */
     handleQualityChange(e){
+
         ListenerHandler._resetErrors('serv_quality');
 
         let res = TipHandler.setServQuality(e.currentTarget.value);
@@ -39,7 +41,8 @@ const ListenerHandler = {
             return false;
         }
         
-        ListenerHandler._updatePrices();
+        //Updates the prices in UI only if no errors are present
+        if(!ListenerHandler._isErrPresent()) ListenerHandler._updatePrices();
     },
 
     /**
@@ -60,7 +63,8 @@ const ListenerHandler = {
             return false;
         }
 
-        ListenerHandler._updatePrices();
+        //Updates the prices in UI only if no errors are present
+        if(!ListenerHandler._isErrPresent()) ListenerHandler._updatePrices();
     },
 
     /**
@@ -119,6 +123,14 @@ const ListenerHandler = {
         TipHandler.final_price = 0;
         TipHandler.tip_price = 0;
         ListenerHandler._updatePrices();
+    },
+
+    /**
+     * Function that checks if error is present in the form and returns boolean
+     * @returns {Boolean} t/f based on if error was found in the form
+     */
+    _isErrPresent(){
+        return document.querySelectorAll(`#main-content .has-error`).length ? true : false;
     }
 
 };

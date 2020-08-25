@@ -6,7 +6,6 @@ html, body {
   width: 100vw;
   height: 100vh;
   font-family: sans-serif;
-  font-size: 16px;
 }
 
 body {
@@ -21,8 +20,8 @@ body {
 
 #main-content {
   position: relative;
-  top: calc(50% - 11em);
-  height: 22em;
+  top: calc(50% - 12.5em);
+  height: 23em;
   width: 50%;
   margin: 0 auto;
   background-color: #FBFBFB;
@@ -52,6 +51,9 @@ body {
   font-size: 0.9em;
   color: #000;
   padding: 0.2em 0;
+}
+.spn-label-text h6 {
+  padding: 0.3em 0;
 }
 
 .sml-error {
@@ -112,4 +114,30 @@ input.has-error {
 select.has-error {
   transition: box-shadow 300ms;
   box-shadow: 0 0 2px #990000;
+}
+
+@media (max-width: 400px) {
+  html {
+    font-size: 6px;
+  }
+}
+@media (min-width: 400px) and (max-width: 600px) {
+  html {
+    font-size: 8px;
+  }
+}
+@media (min-width: 600px) and (max-width: 800px) {
+  html {
+    font-size: 10px;
+  }
+}
+@media (min-width: 800px) and (max-width: 1024px) {
+  html {
+    font-size: 13px;
+  }
+}
+@media (min-width: 1024px) {
+  html {
+    font-size: 16px;
+  }
 }

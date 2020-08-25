@@ -8,6 +8,10 @@
     font-size : $font-size-med;
     color : $color-black;
     padding: .2em 0;
+
+    h6 {
+        padding: .3em 0;
+    }
 }
 
 .sml-error {
