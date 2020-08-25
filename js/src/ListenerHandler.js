@@ -17,16 +17,13 @@ const ListenerHandler = {
         //Check if input is empty or has 0 as value, if so fixes the final price so outdated data arent shown
         if(parsed_value == 0 || isNaN(parsed_value)) ListenerHandler._nullFinalPriceFix();
 
-        //Check if the price is different from the one set
-        if(TipHandler.price != parsed_value) {
-            let res = TipHandler.setPrice(parsed_value);
-            if(!res){
-                ListenerHandler.handleInputErrors('price');
-                return false;
-            }
-
-            ListenerHandler._updateFinalPrice();
+        let res = TipHandler.setPrice(parsed_value);
+        if(!res){
+            ListenerHandler.handleInputErrors('price');
+            return false;
         }
+
+        ListenerHandler._updateFinalPrice();
     },
 
     /**
@@ -57,16 +54,13 @@ const ListenerHandler = {
         //Check if input is empty or has 1 as value, if so fixes the final price so outdated data arent shown
         if(parsed_value == 1 || isNaN(parsed_value)) ListenerHandler._nullFinalPriceFix();
 
-        //Check if the price is different from the one set
-        if(TipHandler.cust_count != parsed_value) {
-            let res = TipHandler.setCustomerCount(parsed_value);
-            if(!res){
-                ListenerHandler.handleInputErrors('cust_count');
-                return false;
-            }
-
-            ListenerHandler._updateFinalPrice();
+        let res = TipHandler.setCustomerCount(parsed_value);
+        if(!res){
+            ListenerHandler.handleInputErrors('cust_count');
+            return false;
         }
+
+        ListenerHandler._updateFinalPrice();
     },
 
     /**
@@ -121,9 +115,7 @@ const ListenerHandler = {
      * 'private' helper function that fixes the final price still showing when input is empty or has default value
      */
     _nullFinalPriceFix(){
-        TipHandler.price = 0;
-        TipHandler.cust_count = 0;
-        TipHandler.calcFinalPrice();
+        TipHandler.final_price = 0;
         ListenerHandler._updateFinalPrice();
     }
 
